@@ -1,0 +1,150 @@
+{
+  "shoppingList": [
+    {
+      "url": "http://rs.paishanglai.net/upload/admin/20200330/15855320116569.jpg",
+      "name": "甲醇",
+      "amount": "20",
+      "level": "3类",
+      "region": "东营市",
+      "id": "0000001",
+      "tid": "1",
+      "detail": {
+        "grade": 5,
+        "comment_num": 3,
+        "order_num": 7000,
+        "sku": {
+          "pifa": {
+            "min_price": 0.5,
+            "max_price": 1,
+            "min_order_num": 10,
+            "logistics_city": "浙江 杭州",
+            "logistics_duration": 3,
+            "size": {
+              "0": {
+                "label": "甲醇1",
+                "price": 0.5,
+                "remain": 3000
+              },
+              "1": {
+                "label": "甲醇2",
+                "price": 0.7,
+                "remain": 200
+              },
+              "2": {
+                "label": "高级甲醛",
+                "price": 1,
+                "remain": 1234
+              }
+            }
+          },
+          "daigou": {
+            "min_price": 0.8,
+            "max_price": 1,
+            "min_order_num": 10,
+            "logistics_city": "浙江 杭州",
+            "logistics_duration": 3,
+            "size": {
+              "0": {
+                "label": "甲醇1",
+                "price": 0.8,
+                "remain": 3000
+              },
+              "1": {
+                "label": "甲醇2",
+                "price": 0.7,
+                "remain": 200
+              }
+            }
+          },
+          "dinghuo": {}
+        },
+        "attr": {
+          "product_name": "甲醛",
+          "product_region": "东营市",
+          "product_construction": "结构",
+          "is_export": false,
+          "product_id": "01",
+          "product_size": "甲醛浓度99%",
+          "product_type": "化学药品",
+          "product_brand": "牛逼克拉克甲醛",
+          "product_category": "化学药品",
+          "shopping_desc": "甲醛，又称蚁醛，是一种有机化合物，化学式是HCHO或CH2O [1]  ，分子量30.03 [2]  。是无色有刺激性气体，对人眼、鼻等有刺激作用。气体相对密度1.067（空气=1），液体密度0.815g/cm3（-20℃）。熔点-92℃，沸点-19.5℃。易溶于水和乙醇。水溶液的浓度最高可达55%，一般是35%-40%，通常为37%，称做甲醛水，俗称福尔马林（formalin）。 [1-2] ",
+          "price_desc": "费用一般在30-50元/平米",
+          "comment_list": ["有用", "便宜，很划算", "下次还要买"]
+        }
+      }
+    },
+    {
+      "url": "https://i02piccdn.sogoucdn.com/b89fe2cf12a02ed3",
+      "name": "乙醇",
+      "amount": "30",
+      "level": "2类",
+      "region": "东营市",
+      "id": "0000002",
+      "tid": "1"
+    },
+    {
+      "url": "https://i02piccdn.sogoucdn.com/3397925ac475b5fe",
+      "name": "丙醇",
+      "amount": "10.2",
+      "level": "2类",
+      "region": "东营市",
+      "id": "0000003",
+      "tid": "1"
+    },
+    {
+      "url": "https://i01piccdn.sogoucdn.com/8aab852e9b78346b",
+      "name": "五金",
+      "amount": "1.2",
+      "level": "2类",
+      "region": "东营市",
+      "id": "0000005",
+      "tid": "0"
+    },
+    {
+      "url": "https://i03piccdn.sogoucdn.com/90c67d2770f04f10",
+      "name": "丙醇1",
+      "amount": "101.2",
+      "level": "2类",
+      "region": "东营市",
+      "id": "0000004",
+      "tid": "1"
+    },
+    {
+      "url": "https://i04piccdn.sogoucdn.com/edc13d6b1d1d8d28",
+      "name": "铲车",
+      "amount": "15",
+      "level": "2类",
+      "region": "东营市",
+      "id": "0000006",
+      "tid": "2"
+    },
+    {
+      "url": "https://i02piccdn.sogoucdn.com/60f4a342e542cacd",
+      "name": "电子设备",
+      "amount": "953",
+      "level": "2类",
+      "region": "东营市",
+      "id": "0000007",
+      "tid": "3"
+    },
+    {
+      "url": "https://i03piccdn.sogoucdn.com/d5b3417994623537",
+      "name": "电子设备1",
+      "amount": "45",
+      "level": "3类",
+      "region": "杭州市",
+      "id": "0000008",
+      "tid": "3"
+    },
+    {
+      "url": "https://i01piccdn.sogoucdn.com/c47e492b3a67a6d0",
+      "name": "机械设备",
+      "amount": "761",
+      "level": "3类",
+      "region": "东营市",
+      "id": "0000009",
+      "tid": "2"
+    }
+  ]
+}
