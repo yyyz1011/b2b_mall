@@ -11,10 +11,33 @@
       v-for="item in NavAsideList"
       :key="item.id"
       :index="item.path"
+      v-show="item.children.length === 0"
     >
-      <el-icon><component :is="item.icon" /></el-icon>
-      <span>{{ item.label }}</span>
+      <template #title>
+        <el-icon><component :is="item.icon" /></el-icon>
+        <span>{{ item.label }}</span>
+      </template>
     </el-menu-item>
+    <el-sub-menu
+      v-for="item in NavAsideList"
+      :key="item.id"
+      v-show="item.children.length !== 0"
+    >
+      <template #title>
+        <el-icon><component :is="item.icon" /></el-icon>
+        <span>{{ item.label }}</span>
+      </template>
+      <el-menu-item-group
+        v-for="(itemChild, indexChild) in item.children"
+        :key="itemChild.id"
+      >
+        <router-link :key="indexChild" :to="itemChild.path">
+          <el-menu-item :index="itemChild.path">{{
+            itemChild.label
+          }}</el-menu-item>
+        </router-link>
+      </el-menu-item-group>
+    </el-sub-menu>
   </el-menu>
 </template>
 

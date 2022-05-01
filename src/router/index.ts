@@ -10,6 +10,24 @@ const routes: Array<RouteRecordRaw> = [
     path: "/price",
     name: "price",
     component: () => import("../views/Price.vue"),
+    redirect: "/price/priceGround",
+    children: [
+      {
+        path: "/price/priceGround",
+        name: "priceGround",
+        component: () => import("../views/priceChild/priceGround.vue"),
+      },
+      {
+        path: "/price/priceList",
+        name: "priceList",
+        component: () => import("../views/priceChild/priceList.vue"),
+      },
+      {
+        path: "/price/pricePurchase",
+        name: "pricePurchase",
+        component: () => import("../views/priceChild/pricePurchase.vue"),
+      },
+    ],
   },
   {
     path: "/order",
