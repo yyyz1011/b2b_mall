@@ -23,7 +23,7 @@ export default {
   width: 87%;
   /* height: auto; */
   min-height: 91%;
-  background-color: antiquewhite;
+  /* background-color: antiquewhite; */
 }
 .admin-main {
   display: flex;
