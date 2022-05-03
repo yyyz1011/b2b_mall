@@ -37,7 +37,7 @@ html {
   z-index: 9999;
 }
 .layout-main {
-  width: 80%;
+  width: 85%;
   margin: 0 auto;
   min-width: 1000px;
 }

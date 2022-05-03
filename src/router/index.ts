@@ -49,6 +49,18 @@ const routes: Array<RouteRecordRaw> = [
     name: "shopping-detail",
     component: () => import("../views/ShoppingDetail.vue"),
   },
+
+  // 询价子页面
+  {
+    path: "/price/priceList/details",
+    name: "Detail",
+    component: () => import("../views/priceChild/listChild/Details.vue"),
+  },
+  {
+    path: "/price/priceList/modify",
+    name: "Modify",
+    component: () => import("../views/priceChild/listChild/Modify.vue"),
+  },
 ];
 
 const router = createRouter({

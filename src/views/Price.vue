@@ -18,6 +18,6 @@ export default {
 .price {
   width: 100%;
   height: auto;
-  background-color: antiquewhite;
+  /* background-color: antiquewhite; */
 }
 </style>
