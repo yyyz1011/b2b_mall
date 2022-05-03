@@ -82,16 +82,8 @@
 import { ref, Ref, computed, getCurrentInstance } from "vue";
 import { ElMessage } from "element-plus";
 import { User, Key, Iphone } from "@element-plus/icons-vue";
-import {
-  loginTypeList,
-  loginRoleList,
-  STORAGE_IS_LOGIN,
-  STORAGE_USERNAME,
-  STORAGE_PASSWORD,
-  STORAGE_PHONE,
-  STORAGE_LOGIN_TYPE,
-  STORAGE_LOGIN_ROLE,
-} from "../constants/user";
+import lof from "localforage";
+import { loginTypeList, loginRoleList, STORAGE_USER } from "../constants/user";
 
 const { proxy } = getCurrentInstance() as any;
 const emit = defineEmits(["close"]);
@@ -149,12 +141,14 @@ async function handleSubmit(isSubmit: boolean) {
   if (data.every((item) => item)) {
     if (props.isLogin) {
       const { username, password, phone, role } = form.value;
-      sessionStorage.setItem(STORAGE_IS_LOGIN, "true");
-      sessionStorage.setItem(STORAGE_USERNAME, username);
-      sessionStorage.setItem(STORAGE_PASSWORD, password);
-      sessionStorage.setItem(STORAGE_PHONE, phone);
-      sessionStorage.setItem(STORAGE_LOGIN_TYPE, currentLoginType.value);
-      sessionStorage.setItem(STORAGE_LOGIN_ROLE, role);
+      await lof.setItem(STORAGE_USER, {
+        is_login: true,
+        username,
+        password,
+        phone,
+        login_type: currentLoginType.value,
+        role,
+      });
       ElMessage.success("登录成功");
       location.reload();
     } else {
