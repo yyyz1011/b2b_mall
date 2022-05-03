@@ -338,6 +338,7 @@
               </el-date-picker
             ></el-form-item>
           </el-form>
+          <span class="form-add">+添加附件</span>
         </div>
       </div>
     </div>
@@ -433,8 +434,8 @@ export default {
   justify-content: space-between;
   align-items: flex-end;
 
-  width: 100%;
-  height: calc(100vh - 140px);
+  width: 87%;
+  height: calc(100vh - 120px);
   background-color: #f2f2f2;
 
   overflow-x: hidden;
@@ -524,7 +525,7 @@ export default {
   margin-bottom: 0.5rem;
   padding: 0 0 1% 2%;
   width: 100%;
-  height: 50%;
+  height: 45%;
   border-bottom: #f1f1f1 0.05rem solid;
 }
 .contact-item-msg {

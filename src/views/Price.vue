@@ -16,8 +16,18 @@ export default {
 
 <style scoped>
 .price {
-  width: 100%;
-  height: auto;
-  /* background-color: antiquewhite; */
+  position: absolute;
+  top: 60px;
+  left: 200px;
+
+  width: 87%;
+  /* height: auto; */
+  min-height: 91%;
+  background-color: antiquewhite;
+}
+.admin-main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
