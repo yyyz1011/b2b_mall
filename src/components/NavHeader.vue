@@ -26,14 +26,21 @@
 <script lang="ts" setup>
 import { ref, Ref, computed } from "vue";
 import DialogLoginVue from "./DialogLogin.vue";
-import { STORAGE_IS_LOGIN } from "../constants/user";
+import lof from "localforage";
+import { STORAGE_USER } from "../constants/user";
 
 // 判断用户 登录、注册操作
 const isLogin: Ref<boolean> = ref(false);
 const dialogVisible: Ref<boolean> = ref(false);
 const dialogConfirmText = computed(() => (isLogin.value ? "登录" : "注册"));
 // 判断用户是否已经登录
-const hasLogin = computed(() => sessionStorage.getItem(STORAGE_IS_LOGIN));
+const hasLogin: Ref<boolean> = ref(false);
+
+getUser();
+async function getUser() {
+  const user = await lof.getItem(STORAGE_USER);
+  hasLogin.value = (user as any)?.is_login ?? false;
+}
 
 function handleLogin() {
   isLogin.value = true;
@@ -46,7 +53,7 @@ function handleRegister() {
 }
 
 function handleExit() {
-  sessionStorage.removeItem(STORAGE_IS_LOGIN);
+  lof.removeItem(STORAGE_USER);
   location.reload();
 }
 </script>
