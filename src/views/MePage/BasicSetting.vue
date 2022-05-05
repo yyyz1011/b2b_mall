@@ -117,8 +117,6 @@ async function init() {
 onBeforeMount(async function () {
   await lof.getItem(STORAGE_USER).then(async (value: any) => {
     loginInfo = value;
-    console.log(value);
-
     phone.value = loginInfo.phone;
   });
   await init();
