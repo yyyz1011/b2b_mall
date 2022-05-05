@@ -50,10 +50,11 @@
 </template>
 
 <script lang='ts' setup>
-import { ref, onBeforeMount } from "vue";
+import { ref, onBeforeMount, onMounted } from "vue";
 import areaData from "../../mock/pca-code.json";
 import { UserInfo, SecurityInfo, CompanyInfo } from "../../constants/me";
 import lof from "localforage";
+import { STORAGE_USER } from "../../constants/user";
 
 const email = ref("");
 const nickname = ref("");
@@ -70,18 +71,28 @@ let loginInfo = {
   login_type: "",
   role: "",
 };
+const areaOptions = [
+  {
+    value: "CN",
+    label: "中国",
+  },
+];
+async function getLoginData() {
+  console.log(123);
 
-async () => {
-  await lof.getItem("b2b-storage-user").then(async (value: any) => {
+  await lof.getItem(STORAGE_USER).then(async (value: any) => {
+    console.log(value);
     loginInfo = value;
   });
-};
+}
 
-onBeforeMount(async () => {
+// 初始化信息
+async function init() {
   if (loginInfo !== null) {
     switch (loginInfo.login_type) {
       case "username":
-        await lof.getItem(loginInfo.username).then((userInfo: any) => {
+        lof.getItem(loginInfo.username).then((userInfo: any) => {
+          if (userInfo === null) return;
           email.value = userInfo.email;
           nickname.value = userInfo.nickname;
           introduction.value = userInfo.describe;
@@ -91,7 +102,8 @@ onBeforeMount(async () => {
         });
         break;
       case "phone":
-        await lof.getItem(loginInfo.phone).then((userInfo: any) => {
+        lof.getItem(loginInfo.phone).then((userInfo: any) => {
+          if (userInfo === null) return;
           email.value = userInfo.email;
           nickname.value = userInfo.nickname;
           introduction.value = userInfo.describe;
@@ -102,6 +114,16 @@ onBeforeMount(async () => {
         break;
     }
   }
+}
+
+onBeforeMount(async function () {
+  await lof.getItem(STORAGE_USER).then(async (value: any) => {
+    loginInfo = value;
+    if (loginInfo.login_type === "phone") {
+      phone.value = loginInfo.phone;
+    }
+  });
+  await init();
 });
 // 保存数据
 function handleSave() {
