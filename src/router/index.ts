@@ -61,6 +61,11 @@ const routes: Array<RouteRecordRaw> = [
     name: "Modify",
     component: () => import("../views/priceChild/listChild/Modify.vue"),
   },
+  {
+    path: "/price/priceGround/groundPlan",
+    name: "groupPlan",
+    component: () => import("../views/priceChild/groundChild/groupPlan.vue"),
+  },
 ];
 
 const router = createRouter({
