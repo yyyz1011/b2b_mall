@@ -1,23 +1,14 @@
 import { de, pa } from "element-plus/lib/locale";
 
-// 绑定邮箱
-export const STORAGE_EMAIL = "b2b_storage_email";
-// 昵称
-export const STORAGE_NICK_NAME = "b2b_storage_nick_name";
-// 个人简介
-export const STORAGE_DESCRIBE = "b2b_storage_describe";
-// 国家地区
-export const STORAGE_COUNTRY = "b2b_storage_country";
-// 所在省市
-export const STORAGE_CITY = "b2b_storage_city";
-// 详细地址
-export const STORAGE_ADDRESS = "b2b_storage_address";
-// 联系电话
-export const STORAGE_PHONE = "b2b_storage_phone";
+// 基础信息
+export const BASIC_SETTING = "b2b_basic_setting_";
+// 安全信息
+export const SECURITY_SETTING = "b2b_security_setting_";
+// 认证信息
+export const COMPANY_AUTH = "b2b_company_auth_";
 
 // 用户信息对象
 export interface UserInfo {
-  id: number;
   email: string;
   nickname: string;
   describe: string;
@@ -33,14 +24,11 @@ export interface SecurityInfo {
   password: string;
   question: string[];
   email: string;
-  // 支付方式，银行卡，支付宝
-  paymentMethod: string;
   // 支付方式对应账号，银行卡账号，支付宝账号昵称
   paymentAccount: string;
 }
 // 企业信息对象
 export interface CompanyInfo {
-  userId: number;
   name: string;
   businessLicenseCode: string;
   legalPerson: string;

@@ -7,7 +7,7 @@
     <el-input v-model="nickname" placeholder="请输入昵称" style="width: 40%" />
     <p>个人简介</p>
     <el-input
-      v-model="introduction"
+      v-model="describe"
       :rows="3"
       placeholder="请输入个人简介"
       type="textarea"
@@ -51,14 +51,15 @@
 
 <script lang='ts' setup>
 import { ref, onBeforeMount, onMounted } from "vue";
+import router from "../../router";
 import areaData from "../../mock/pca-code.json";
-import { UserInfo, SecurityInfo, CompanyInfo } from "../../constants/me";
+import { UserInfo, BASIC_SETTING } from "../../constants/me";
 import lof from "localforage";
 import { STORAGE_USER } from "../../constants/user";
 
 const email = ref("");
 const nickname = ref("");
-const introduction = ref("");
+const describe = ref("");
 const country = ref("CN");
 const city = ref("");
 const address = ref("");
@@ -77,36 +78,33 @@ const areaOptions = [
     label: "中国",
   },
 ];
-async function getLoginData() {
-  console.log(123);
-
-  await lof.getItem(STORAGE_USER).then(async (value: any) => {
-    console.log(value);
-    loginInfo = value;
-  });
-}
-
+const props = {
+  value: "code",
+  label: "name",
+};
 // 初始化信息
 async function init() {
   if (loginInfo !== null) {
     switch (loginInfo.login_type) {
       case "username":
-        lof.getItem(loginInfo.username).then((userInfo: any) => {
-          if (userInfo === null) return;
-          email.value = userInfo.email;
-          nickname.value = userInfo.nickname;
-          introduction.value = userInfo.describe;
-          city.value = JSON.parse(userInfo.city);
-          address.value = userInfo.address;
-          phone.value = userInfo.phone;
-        });
+        lof
+          .getItem(BASIC_SETTING + loginInfo.username)
+          .then((userInfo: any) => {
+            if (userInfo === null) return;
+            email.value = userInfo.email;
+            nickname.value = userInfo.nickname;
+            describe.value = userInfo.describe;
+            city.value = JSON.parse(userInfo.city);
+            address.value = userInfo.address;
+            phone.value = userInfo.phone;
+          });
         break;
       case "phone":
-        lof.getItem(loginInfo.phone).then((userInfo: any) => {
+        lof.getItem(BASIC_SETTING + loginInfo.phone).then((userInfo: any) => {
           if (userInfo === null) return;
           email.value = userInfo.email;
           nickname.value = userInfo.nickname;
-          introduction.value = userInfo.describe;
+          describe.value = userInfo.describe;
           city.value = JSON.parse(userInfo.city);
           address.value = userInfo.address;
           phone.value = userInfo.phone;
@@ -119,28 +117,44 @@ async function init() {
 onBeforeMount(async function () {
   await lof.getItem(STORAGE_USER).then(async (value: any) => {
     loginInfo = value;
-    if (loginInfo.login_type === "phone") {
-      phone.value = loginInfo.phone;
-    }
+    console.log(value);
+
+    phone.value = loginInfo.phone;
   });
   await init();
 });
 // 保存数据
 function handleSave() {
   const userInfo: UserInfo = {
-    id: 0,
     email: email.value,
     nickname: nickname.value,
-    describe: introduction.value,
+    describe: describe.value,
     country: country.value,
     city: JSON.stringify(city.value),
     address: address.value,
-    account: "123",
+    account: loginInfo.username,
     phone: phone.value,
   };
+  switch (loginInfo.login_type) {
+    case "username":
+      lof.setItem(BASIC_SETTING + loginInfo.username, userInfo);
+      break;
+    case "phone":
+      lof.setItem(BASIC_SETTING + loginInfo.phone, userInfo);
+      break;
+  }
 }
 // 取消更改
-function handleCancel() {}
+async function handleCancel() {
+  email.value = "";
+  nickname.value = "";
+  describe.value = "";
+  country.value = "CN";
+  city.value = "";
+  address.value = "";
+  phone.value = loginInfo.phone;
+  await init();
+}
 </script>
 
 <style>
