@@ -6,7 +6,7 @@
       :label="item.label"
       :name="item.key"
     >
-      <el-table :data="orderData" stripe style="width: 100%">
+      <el-table :data="currentOrderData" stripe style="width: 100%">
         <el-table-column prop="order_id" label="货品" width="350">
           <template #default="scope">
             <div class="order_product_info">
@@ -103,6 +103,10 @@ const currentStatus = ref(allStatus.key);
 const allStatusList = computed(() => [allStatus, ...orderStatusList]);
 
 const orderData: any = ref(MockOrderList.list);
+const currentOrderData = computed(() => {
+  if (Number(currentStatus.value) === 0) return orderData.value;
+  return orderData.value.filter((item) => item.status === currentStatus.value);
+});
 
 getOrderData();
 async function getOrderData() {

@@ -64,6 +64,7 @@ import lodash from "lodash";
 import lof from "localforage";
 import { ElMessage } from "element-plus";
 import { STORAGE_ORDER } from "../../constants/order";
+import { STORAGE_USER } from "../../constants/user";
 const props = defineProps(["type", "info"]);
 const skuInfo = computed(() => props.info.detail.sku[props.type] ?? {});
 const isEmptySku = computed(() => lodash.isEmpty(skuInfo.value));
@@ -75,13 +76,14 @@ const currentSkuNum: Ref<any> = ref({});
   });
 
 async function handleOrder() {
+  const userInfo: any = await lof.getItem(STORAGE_USER);
   let orderList: any = [];
   Object.keys(currentSkuNum.value).forEach((item: any) => {
     if (currentSkuNum.value[item]) {
       const newOrderInfo = {
         cover_url: props.info.url,
         order_id: getUUID(),
-        order_user_id: "",
+        order_user_id: userInfo.username,
         order_time: new Date().getTime(),
         product_name: props.info.name,
         type: `${props.info.region} ${props.info.level}`,
