@@ -64,7 +64,11 @@
                 >
               </div>
               <div><el-button type="text">查看物流</el-button></div>
-              <div><el-button type="text">合同签订</el-button></div>
+              <div>
+                <el-button type="text" @click="handlerContract(scope.row)"
+                  >合同签订</el-button
+                >
+              </div>
             </div>
           </template>
         </el-table-column>
@@ -88,6 +92,60 @@
       </el-table>
     </el-tab-pane>
   </el-tabs>
+  <el-dialog
+    v-model="dialogVisible"
+    title="合同签署"
+    width="60%"
+    center
+    destroy-on-close
+  >
+    <div class="dialogBody">
+      <p>签署信息</p>
+      <el-divider />
+      <span>发起人:</span>
+      <el-input v-model="sender" class="dialogInput" />
+      <span>签署对象:</span>
+      <el-input v-model="recipient" class="dialogInput" />
+      <span>订单编号:</span>
+      <el-input v-model="orderId" class="dialogInput" />
+      <span>文件类型:</span>
+      <el-select
+        v-model="fileType"
+        class="m-2"
+        placeholder="文件类型"
+        style="width: 120px"
+      >
+        <el-option
+          v-for="item in fileOptions"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        />
+      </el-select>
+      <p style="margin-top: 30px">上传合同文件</p>
+      <el-divider />
+      <div class="uploadArea">
+        <el-upload
+          drag
+          accept="image/png,image/jpeg"
+          action="http://119.91.204.169:8080/b2b/file"
+          :on-success="handleSuccess"
+        >
+          <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+          <div class="el-upload__text">单击或者拖动文件到此区域进行上传</div>
+          <template #tip>
+            <div class="el-upload__tip">请上传大小不超过5M的文件</div>
+          </template>
+        </el-upload>
+      </div>
+    </div>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button type="primary" @click="handleContractSubmit">提交</el-button>
+        <el-button @click="dialogVisible = false">取消</el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup lang="ts">
@@ -95,13 +153,70 @@ import { computed, ref } from "vue";
 import { allStatus, orderStatusList, STORAGE_ORDER } from "../constants/order";
 import MockOrderList from "../mock/mock-order-list.json";
 import { useRouter } from "vue-router";
-import { ElMessage } from "element-plus";
+import { ElMessage, UploadFile, UploadProps } from "element-plus";
 import lof from "localforage";
+import { UploadFilled } from "@element-plus/icons-vue";
+import { el, fa, fi } from "element-plus/lib/locale";
+import {
+  Contract,
+  contractList,
+  STORAGE_CONTRACT,
+} from "../constants/contract";
+
 const router = useRouter();
 
 const currentStatus = ref(allStatus.key);
 const allStatusList = computed(() => [allStatus, ...orderStatusList]);
 
+const dialogVisible = ref(false);
+const sender = ref("");
+const recipient = ref("");
+const orderId = ref("");
+const fileType = ref("");
+const file = ref("");
+let productName = "";
+function handlerContract(info: any) {
+  sender.value = "测试账户1";
+  recipient.value = "测试账户2";
+  orderId.value = "T" + info.order_id;
+  fileType.value = "图片";
+  dialogVisible.value = true;
+  productName = info.product_name;
+}
+const handleSuccess: UploadProps["onSuccess"] = (
+  response: any,
+  uploadFile: UploadFile
+) => {
+  file.value = response;
+};
+const handleContractSubmit = async () => {
+  let data = [];
+  await lof.getItem(STORAGE_CONTRACT).then((contracts: any) => {
+    console.log(contracts);
+    data = contracts;
+  });
+  const contract: Contract = {
+    filename: productName,
+    recipient: recipient.value,
+    fileType: fileType.value,
+    sender: sender.value,
+    status: "待他人签",
+    orderId: orderId.value,
+    createTime: new Date().getTime(),
+    contractFile: file.value,
+  };
+  console.log(data, contract);
+
+  if (data === null) {
+    await lof.setItem(STORAGE_CONTRACT, [contractList, contract]);
+  } else {
+    await lof.setItem(STORAGE_CONTRACT, [contract, ...data]);
+  }
+  await lof.getItem(STORAGE_CONTRACT).then((value: any) => {
+    console.log(value);
+  });
+  dialogVisible.value = false;
+};
 const orderData: any = ref(MockOrderList.list);
 const currentOrderData = computed(() => {
   if (Number(currentStatus.value) === 0) return orderData.value;
@@ -146,6 +261,20 @@ function handleGoOrder(info: any) {
     },
   });
 }
+const fileOptions = [
+  {
+    value: "pdf",
+    label: "pdf",
+  },
+  {
+    value: "图片",
+    label: "图片",
+  },
+  {
+    value: "word文档",
+    label: "word文档",
+  },
+];
 </script>
 
 <style scoped>
@@ -173,5 +302,19 @@ function handleGoOrder(info: any) {
 }
 .order_status_content_status {
   color: rgb(81, 126, 12);
+}
+.dialogBody span {
+  margin-right: 10px;
+}
+.dialogInput {
+  width: 16%;
+  margin-right: 10px;
+}
+.uploadArea {
+  display: table;
+  margin: 0 auto;
+}
+.dialog-footer button:first-child {
+  margin-right: 10px;
 }
 </style>

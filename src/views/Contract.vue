@@ -253,7 +253,6 @@ const init = async () => {
     if (contracts !== null) {
       contractData.value.push(...contracts);
     }
-    console.log(contractData);
   });
 };
 const handleDetail = (index: number, row: Contract) => {
