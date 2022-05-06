@@ -22,7 +22,7 @@
 <script lang="ts" setup>
 import { computed } from "vue";
 import { useRouter } from "vue-router";
-const router = useRouter();
+const getItem = useRouter();
 const emit = defineEmits(["go-shopping"]);
 const props = defineProps({
   id: String,
@@ -42,7 +42,7 @@ const tLabel = computed(
 );
 
 function handleGoShopping() {
-  router.push({
+  getItem.push({
     name: "shopping-detail",
     params: {
       id: props.id,
