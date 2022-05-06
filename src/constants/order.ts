@@ -1,3 +1,5 @@
+export const STORAGE_ORDER: string = "b2b-storage-order";
+
 interface OrderStatus {
   id: number;
   label: string;

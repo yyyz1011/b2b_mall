@@ -46,5 +46,4 @@
 import { computed } from "vue";
 const props = defineProps(["info"]);
 const attrInfo = computed(() => props.info.detail.attr);
-console.log(attrInfo.value);
 </script>

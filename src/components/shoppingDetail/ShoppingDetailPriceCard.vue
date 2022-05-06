@@ -47,7 +47,11 @@
     </el-descriptions-item>
   </el-descriptions>
   <div class="operate">
-    <el-button class="operate-btn" type="primary" :disabled="isEmptySku"
+    <el-button
+      class="operate-btn"
+      type="primary"
+      :disabled="isEmptySku"
+      @click="handleOrder"
       >立即订购</el-button
     >
     <el-button class="operate-btn" :disabled="isEmptySku">加入购物车</el-button>
@@ -57,6 +61,9 @@
 <script setup lang="ts">
 import { computed, ref, Ref } from "vue";
 import lodash from "lodash";
+import lof from "localforage";
+import { ElMessage } from "element-plus";
+import { STORAGE_ORDER } from "../../constants/order";
 const props = defineProps(["type", "info"]);
 const skuInfo = computed(() => props.info.detail.sku[props.type] ?? {});
 const isEmptySku = computed(() => lodash.isEmpty(skuInfo.value));
@@ -66,6 +73,55 @@ const currentSkuNum: Ref<any> = ref({});
   Object.values(skuInfo.value?.size).forEach((item: any) => {
     currentSkuNum.value[item.price] = 0;
   });
+
+async function handleOrder() {
+  let orderList: any = [];
+  Object.keys(currentSkuNum.value).forEach((item: any) => {
+    if (currentSkuNum.value[item]) {
+      const newOrderInfo = {
+        cover_url: props.info.url,
+        order_id: getUUID(),
+        order_user_id: "",
+        order_time: new Date().getTime(),
+        product_name: props.info.name,
+        type: `${props.info.region} ${props.info.level}`,
+        order_price: item,
+        order_num: currentSkuNum.value[item],
+        all_price: item * currentSkuNum.value[item] + 10,
+        order_yunfei: 10,
+        status: 1,
+      };
+      orderList.push(newOrderInfo);
+    }
+  });
+  if (lodash.isEmpty(orderList)) {
+    ElMessage({
+      message: "下单数量不能为0",
+      type: "error",
+      offset: 80,
+    });
+    return;
+  }
+  const hasOrderList: any = (await lof.getItem(STORAGE_ORDER)) ?? [];
+  const newOrderList = [...hasOrderList, ...orderList];
+  await lof.setItem(STORAGE_ORDER, newOrderList);
+  ElMessage({
+    message: "下单成功",
+    type: "success",
+    offset: 80,
+  });
+  setTimeout(() => location.reload(), 1000);
+}
+
+function getUUID(tabName = "") {
+  var str = [];
+  var Chars = "0123456789abcdefghijklmnopqrstuvwxyz";
+  for (var i = 0; i < 36; i++) {
+    str[i] = Chars.substr(Math.floor(Math.random() * 16), 1);
+  }
+  str[0] = str[8] = str[13] = str[18] = str[23] = "-";
+  return tabName + str.join("");
+}
 </script>
 
 <style scoped>
