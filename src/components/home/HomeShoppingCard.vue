@@ -3,7 +3,11 @@
     <img class="img" :src="url" :alt="name" />
     <div class="header">
       <div>{{ name }}</div>
-      <el-button size="small" type="primary" @click="handleGoShopping"
+      <el-button
+        size="small"
+        type="primary"
+        :disabled="!detail"
+        @click="handleGoShopping"
         >查看货源</el-button
       >
     </div>
@@ -29,6 +33,7 @@ const props = defineProps({
   region: String,
   tid: String,
   tList: Array,
+  detail: Object,
 });
 
 const tLabel = computed(
