@@ -12,6 +12,7 @@
           :region="item.region"
           :tid="item.tid"
           :t-list="shoppingTypeList"
+          :detail="item.detail ?? null"
           @go-shopping="handleGoShopping"
         />
       </template>
