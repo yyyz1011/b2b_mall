@@ -14,24 +14,24 @@
             class="form-dynamic"
           >
             <el-form-item
-              prop="email"
+              prop="name"
               label="商品名称"
               :rules="[
                 { required: true, message: '请填写商品名称', trigger: 'blur' },
                 {
-                  type: 'email',
+                  type: 'name',
                   message: '请填写商品名称',
                   trigger: 'blur',
                 },
               ]"
             >
               <el-input
-                v-model="listForm.email"
+                v-model="listForm.name"
                 placeholder="请填写商品名称"
               ></el-input>
             </el-form-item>
             <el-form-item
-              prop="email"
+              prop="sum"
               label="数量"
               :rules="{
                 required: true,
@@ -40,11 +40,11 @@
               }"
             >
               <el-input
-                v-model="listForm.email"
+                v-model="listForm.sum"
                 placeholder="请填数量"
               ></el-input>
             </el-form-item>
-            <el-form-item prop="email" label="单位"
+            <el-form-item prop="options" label="单位"
               ><el-select
                 v-model="value"
                 class="form-select"
@@ -59,25 +59,18 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item prop="email" label="品牌"
+            <el-form-item prop="brand" label="品牌"
               ><el-input
-                v-model="listForm.email"
+                v-model="listForm.brand"
                 placeholder="无要求可不填"
               ></el-input>
             </el-form-item>
-            <el-form-item prop="email" label="备注">
+            <el-form-item prop="note" label="备注">
               <el-input
-                v-model="listForm.email"
+                v-model="listForm.note"
                 placeholder="如：型号、性能、用途等"
               ></el-input
             ></el-form-item>
-            <!-- <el-form-item>
-              <el-button type="primary" @click="submitForm('listForm')"
-                >提交</el-button
-              >
-              <el-button @click="addDomain">新增域名</el-button>
-              <el-button @click="resetForm('listForm')">重置</el-button>
-            </el-form-item> -->
           </el-form>
           <span class="form-add">+添加一项</span>
         </div>
@@ -94,25 +87,25 @@
             class="form-dynamic"
           >
             <el-form-item
-              prop="email"
+              prop="require"
               label="发票要求"
               :rules="[
                 { required: true, message: '请填写发票要求', trigger: 'blur' },
                 {
-                  type: 'email',
+                  type: 'require',
                   message: '请填发票要求',
                   trigger: 'blur',
                 },
               ]"
             >
               <el-input
-                v-model="listForm.email"
+                v-model="listForm.require"
                 class="require-form-item"
                 placeholder="是否需要发票 及税率"
               ></el-input>
             </el-form-item>
             <el-form-item
-              prop="require"
+              prop="requireValue"
               label="报价要求"
               :rules="{
                 required: true,
@@ -135,7 +128,7 @@
               </el-select>
             </el-form-item>
             <el-form-item
-              prop="email"
+              prop="transmode"
               label="交易方式"
               :rules="{
                 required: true,
@@ -144,13 +137,13 @@
               }"
             >
               <el-input
-                v-model="listForm.email"
+                v-model="listForm.transmode"
                 class="require-form-item"
                 placeholder="账期支付（在结算对账后60天内付款）"
               ></el-input>
             </el-form-item>
             <el-form-item
-              prop="email"
+              prop="paymode"
               label="支付方式"
               :rules="{
                 required: true,
@@ -159,14 +152,14 @@
               }"
             >
               <el-input
-                v-model="listForm.email"
+                v-model="listForm.paymode"
                 class="require-form-item"
                 placeholder="网商银行融易收（对公转账）、银行电子承兑汇票（付款期限6个月）多选"
               ></el-input>
             </el-form-item>
 
             <el-form-item
-              prop="email"
+              prop="address"
               label="供应商所在地"
               :rules="{
                 required: true,
@@ -179,7 +172,7 @@
                 placeholder="省 市"
               >
                 <el-option
-                  v-for="item in options"
+                  v-for="item in addressValue"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
@@ -188,7 +181,7 @@
               </el-select>
             </el-form-item>
             <el-form-item
-              prop="email"
+              prop="condition"
               label="供应商资质"
               :rules="{
                 required: true,
@@ -201,7 +194,7 @@
                 placeholder="不限（营业执照、税务登记证、组织机构代理）"
               >
                 <el-option
-                  v-for="item in options"
+                  v-for="item in condition"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
@@ -209,9 +202,9 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item prop="email" label="补充说明">
+            <el-form-item prop="other" label="补充说明">
               <el-input
-                v-model="listForm.email"
+                v-model="listForm.other"
                 type="textarea"
                 class="require-form-item0"
                 :autosize="{ minRows: 4, maxRows: 4 }"
@@ -232,25 +225,25 @@
             class="form-dynamic"
           >
             <el-form-item
-              prop="email"
+              prop="personal"
               label="联系人"
               :rules="[
                 { required: true, message: '请填写联系人', trigger: 'blur' },
                 {
-                  type: 'email',
+                  type: 'personal',
                   message: '请填写联系人',
                   trigger: 'blur',
                 },
               ]"
             >
               <el-input
-                v-model="listForm.email"
+                v-model="listForm.personal"
                 class="contact-form-item"
                 placeholder="您的称呼"
               ></el-input>
             </el-form-item>
             <el-form-item
-              prop="email"
+              prop="phone"
               label="手机号"
               :rules="{
                 required: true,
@@ -259,13 +252,13 @@
               }"
             >
               <el-input
-                v-model="listForm.email"
+                v-model="listForm.phone"
                 class="contact-form-item"
                 placeholder="请填写手机号"
               ></el-input>
             </el-form-item>
             <el-form-item
-              prop="email"
+              prop="shortmsg"
               label="短信验证码"
               class="contact-item-msg"
               :rules="{
@@ -276,21 +269,21 @@
             >
               <div>
                 <el-input
-                  v-model="listForm.email"
+                  v-model="listForm.shortmsg"
                   class="contact-form-item"
                   placeholder="输入验证码"
                 ></el-input>
               </div>
               <el-button type="info">获取验证码</el-button>
             </el-form-item>
-            <el-form-item prop="email" label="公司名称"
+            <el-form-item prop="company" label="公司名称"
               ><el-input
-                v-model="listForm.email"
+                v-model="listForm.company"
                 class="contact-form-item"
                 placeholder="请填写公司名称"
               ></el-input>
             </el-form-item>
-            <el-form-item prop="email" label="收货地址"
+            <el-form-item prop="receive" label="收货地址"
               ><el-select
                 class="contact-form-item"
                 v-model="value"
@@ -306,7 +299,7 @@
               </el-select>
             </el-form-item>
             <el-form-item
-              prop="email"
+              prop="askname"
               label="询价名称"
               :rules="{
                 required: true,
@@ -315,13 +308,13 @@
               }"
             >
               <el-input
-                v-model="listForm.email"
+                v-model="listForm.askname"
                 class="contact-form-item"
                 placeholder="请填写询价名称"
               ></el-input>
             </el-form-item>
             <el-form-item
-              prop="email"
+              prop="contancTime"
               label="报价截至时间"
               :rules="{
                 required: true,
@@ -343,7 +336,9 @@
       </div>
     </div>
     <div class="bottom">
-      <el-button size="large" type="primary">发布询价</el-button>
+      <el-button size="large" @click="sendClick" type="primary"
+        >发布询价</el-button
+      >
       <el-button size="large">保存</el-button>
     </div>
   </div>
@@ -376,6 +371,25 @@ export default {
           },
         ],
         email: "",
+        name: "",
+        sum: "",
+        options: "",
+        brand: "",
+        note: "",
+        require: "",
+        requireValue: "",
+        transmode: "",
+        paymode: "",
+        address: "",
+        condition: "",
+        other: "",
+        personal: "",
+        phone: "",
+        shortmsg: "",
+        company: "",
+        receive: "",
+        askname: "",
+        contancTime: "",
       },
 
       require: [
@@ -393,6 +407,20 @@ export default {
         },
       ],
       requireValue: [],
+      condition: [
+        {
+          value: "选项1",
+          label: "优",
+        },
+        {
+          value: "选项2",
+          label: "良",
+        },
+        {
+          value: "选项3",
+          label: "一般",
+        },
+      ],
 
       contancTime: "",
     };
@@ -422,6 +450,16 @@ export default {
         value: "",
         key: Date.now(),
       });
+    },
+
+    sendClick() {
+      this.$message({
+        showClose: true,
+        message: "发布成功",
+        type: "success",
+      });
+      alert("发布成功")
+      this.$router.push("/price/priceList");
     },
   },
 };

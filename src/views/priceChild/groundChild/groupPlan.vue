@@ -22,7 +22,11 @@
               距离报价结束还剩：00 天 08 时 26分
             </div>
             <div class="plan-bottom-right">
-              <el-button size="large" class="btn" type="danger"
+              <el-button
+                size="large"
+                @click="priceClick"
+                class="btn"
+                type="danger"
                 >立即报价</el-button
               >
               <div class="plan-bottom-right-item">
@@ -132,6 +136,28 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    priceClick() {
+      this.$prompt("请输入您的报价", "提示", {
+        confirmButtonText: "提交",
+        cancelButtonText: "取消",
+      })
+        .then(({ value }) => {
+          this.$message({
+            type: "success",
+            message: "你的报价是: " + value,
+          });
+          alert("您的报价是"+value)
+          this.$router.push("/price/priceGround")
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "取消输入",
+          });
+        });
+    },
   },
 };
 </script>
