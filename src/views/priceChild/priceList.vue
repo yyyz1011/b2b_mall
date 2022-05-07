@@ -31,6 +31,16 @@
           </el-table-column>
           <el-table-column prop="state" label="状态" width="120">
           </el-table-column>
+          <el-table-column prop="contract" label="合同" width="120">
+            <template v-slot="scope">
+              <el-button
+                @click="contractClick(scope.row)"
+                type="text"
+                size="small"
+                >{{ scope.row.contract }}</el-button
+              >
+            </template>
+          </el-table-column>
           <el-table-column fixed="right" label="操作">
             <template v-slot="scope">
               <el-button
@@ -42,8 +52,15 @@
               <el-button type="text" @click="editClick(scope.row)" size="small"
                 >修改</el-button
               >
-              <el-button type="text" size="small">结束</el-button>
-              <el-button type="text" size="small">删除</el-button>
+              <el-button type="text" @click="endClick(scope.row)" size="small"
+                >结束</el-button
+              >
+              <el-button
+                type="text"
+                @click="deleteClick(scope.row)"
+                size="small"
+                >删除</el-button
+              >
             </template>
           </el-table-column>
         </el-table>
@@ -76,6 +93,8 @@ export default {
       currentPage: "",
       tableData: [
         {
+          id: 1,
+          contract: "签订中",
           date: "2022-03-29",
           name: "2022年4月金属接近开光、链轮",
           quote: "8条",
@@ -84,6 +103,8 @@ export default {
           state: "进行中",
         },
         {
+          id: 2,
+          contract: "签订中",
           date: "2022-03-29",
           name: "2022年4月金属接近开光、链轮",
           quote: "8条",
@@ -92,6 +113,8 @@ export default {
           state: "进行中",
         },
         {
+          id: 3,
+          contract: "签订中",
           date: "2022-03-29",
           name: "2022年4月金属接近开光、链轮",
           quote: "8条",
@@ -100,6 +123,8 @@ export default {
           state: "进行中",
         },
         {
+          id: 4,
+          contract: "签订中",
           date: "2022-03-29",
           name: "2022年4月金属接近开光、链轮",
           quote: "8条",
@@ -108,6 +133,8 @@ export default {
           state: "进行中",
         },
         {
+          id: 5,
+          contract: "签订中",
           date: "2022-03-29",
           name: "2022年4月金属接近开光、链轮",
           quote: "8条",
@@ -116,6 +143,8 @@ export default {
           state: "进行中",
         },
         {
+          id: 6,
+          contract: "签订中",
           date: "2022-03-29",
           name: "2022年4月金属接近开光、链轮",
           quote: "8条",
@@ -124,6 +153,8 @@ export default {
           state: "进行中",
         },
         {
+          id: 7,
+          contract: "签订中",
           date: "2022-03-29",
           name: "2022年4月金属接近开光、链轮",
           quote: "8条",
@@ -132,6 +163,8 @@ export default {
           state: "进行中",
         },
         {
+          id: 8,
+          contract: "签订中",
           date: "2022-03-29",
           name: "2022年4月金属接近开光、链轮",
           quote: "8条",
@@ -140,6 +173,8 @@ export default {
           state: "进行中",
         },
         {
+          id: 9,
+          contract: "签订中",
           date: "2022-03-29",
           name: "2022年4月金属接近开光、链轮",
           quote: "8条",
@@ -158,6 +193,24 @@ export default {
     detailsClick(info) {
       console.log("详情", info);
       this.$router.push("/price/priceList/details");
+    },
+    endClick(info) {
+      info.state = "已结束";
+      info.contract = "已签订";
+    },
+    deleteClick(info) {
+      for (let i in this.tableData) {
+        if (this.tableData[i].id === info.id) {
+          this.tableData.splice(i, 1);
+        }
+      }
+    },
+    contractClick(info) {
+      if (info.contract === "签订中") {
+        this.$router.push("/contract");
+      } else if (info.contract === "已签订") {
+        this.$router.push("/contract");
+      }
     },
     // handleSizeChange(val) {
     //   console.log(`每页 ${val} 条`);
