@@ -25,6 +25,24 @@ const routes: Array<RouteRecordRaw> = [
     path: "/me",
     name: "me",
     component: () => import("../views/Me.vue"),
+    redirect: "/me/basic",
+    children: [
+      {
+        path: "/me/basic",
+        name: "basicSetting",
+        component: () => import("../views/MePage/BasicSetting.vue"),
+      },
+      {
+        path: "/me/security",
+        name: "securitySetting",
+        component: () => import("../views/MePage/SecuritySetting.vue"),
+      },
+      {
+        path: "/me/company",
+        name: "companyAuth",
+        component: () => import("../views/MePage/CompanyAuth.vue"),
+      },
+    ],
   },
   {
     path: "/shopping/detail/:id",
