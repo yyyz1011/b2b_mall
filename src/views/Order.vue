@@ -156,7 +156,6 @@ import { useRouter } from "vue-router";
 import { ElMessage, UploadFile, UploadProps } from "element-plus";
 import lof from "localforage";
 import { UploadFilled } from "@element-plus/icons-vue";
-import { el, fa, fi } from "element-plus/lib/locale";
 import {
   Contract,
   contractList,
