@@ -10,6 +10,24 @@ const routes: Array<RouteRecordRaw> = [
     path: "/price",
     name: "price",
     component: () => import("../views/Price.vue"),
+    redirect: "/price/priceGround",
+    children: [
+      {
+        path: "/price/priceGround",
+        name: "priceGround",
+        component: () => import("../views/priceChild/priceGround.vue"),
+      },
+      {
+        path: "/price/priceList",
+        name: "priceList",
+        component: () => import("../views/priceChild/priceList.vue"),
+      },
+      {
+        path: "/price/pricePurchase",
+        name: "pricePurchase",
+        component: () => import("../views/priceChild/pricePurchase.vue"),
+      },
+    ],
   },
   {
     path: "/order",
@@ -53,6 +71,22 @@ const routes: Array<RouteRecordRaw> = [
     path: "/order/detail/:id",
     name: "order-detail",
     component: () => import("../views/OrderDetail.vue"),
+  },
+  // 询价子页面
+  {
+    path: "/price/priceList/details",
+    name: "Detail",
+    component: () => import("../views/priceChild/listChild/Details.vue"),
+  },
+  {
+    path: "/price/priceList/modify",
+    name: "Modify",
+    component: () => import("../views/priceChild/listChild/Modify.vue"),
+  },
+  {
+    path: "/price/priceGround/groundPlan",
+    name: "groupPlan",
+    component: () => import("../views/priceChild/groundChild/groupPlan.vue"),
   },
 ];
 

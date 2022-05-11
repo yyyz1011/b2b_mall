@@ -21,7 +21,23 @@ export const NavAsideList: NavAsideItem[] = [
     label: "询价",
     icon: PriceTag,
     path: "/price",
-    children: [],
+    children: [
+      {
+        id: "10",
+        label: "询价广场",
+        path: "/price/priceGround",
+      },
+      {
+        id: "11",
+        label: "我的询价单",
+        path: "/price/priceList",
+      },
+      {
+        id: "12",
+        label: "询价采购",
+        path: "/price/pricePurchase",
+      },
+    ],
   },
   {
     id: "2",
@@ -42,22 +58,6 @@ export const NavAsideList: NavAsideItem[] = [
     label: "我的",
     icon: UserFilled,
     path: "/me",
-    children: [
-      {
-        id: "40",
-        label: "基本设置",
-        path: "/me/basic",
-      },
-      {
-        id: "41",
-        label: "安全设置",
-        path: "/me/security",
-      },
-      {
-        id: "42",
-        label: "企业认证",
-        path: "/me/company",
-      },
-    ],
+    children: [],
   },
 ];
