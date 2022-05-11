@@ -56,10 +56,76 @@
     >
     <el-button class="operate-btn" :disabled="isEmptySku">加入购物车</el-button>
   </div>
+  <el-dialog
+    v-model="dialogVisible"
+    title="确认订单"
+    width="80%"
+    :before-close="handleDialogClose"
+    destroy-on-close
+  >
+    <el-descriptions
+      class="order-detail-descriptions"
+      title="订单信息-收货信息"
+    >
+      <el-descriptions-item label="订单号">{{
+        prepareOrderList[0]?.order_id ?? ""
+      }}</el-descriptions-item>
+      <el-descriptions-item label="收货人">收货人A</el-descriptions-item>
+      <el-descriptions-item label="收货地址"
+        >浙江省杭州市浙江传媒学院</el-descriptions-item
+      >
+      <el-descriptions-item label="手机">13887241749</el-descriptions-item>
+      <el-descriptions-item label="电话">-</el-descriptions-item>
+      <el-descriptions-item label="备注"
+        >预计最晚发货完成时间：支付成功后两天</el-descriptions-item
+      >
+    </el-descriptions>
+    <el-descriptions
+      class="order-detail-descriptions"
+      title="订单信息-供应商信息"
+    >
+      <el-descriptions-item label="供应商">{{
+        prepareOrderList[0]?.order_user_id ?? ""
+      }}</el-descriptions-item>
+      <el-descriptions-item label="手机">12381823942</el-descriptions-item>
+      <el-descriptions-item label="电话">-</el-descriptions-item>
+    </el-descriptions>
+    <el-table :data="prepareOrderList" stripe style="width: 100%">
+      <el-table-column prop="order_id" label="货品" width="350">
+        <template #default="scope">
+          <div class="order_product_info">
+            <img class="order_product_info_img" :src="scope.row.cover_url" />
+            <div class="order_product_info_content">
+              <div class="order_product_info_content_title">
+                {{ scope.row.product_name }}
+              </div>
+              <div class="order_product_info_content_type">
+                {{ scope.row.type }}
+              </div>
+            </div>
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column prop="order_price" label="发布价" />
+      <el-table-column prop="order_num" label="数量" />
+    </el-table>
+    <div class="order-yunfei">
+      运费：<b>{{ prepareOrderList[0]?.order_yunfei }}</b
+      >元
+    </div>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="handleDialogClose">取消</el-button>
+        <el-button type="primary" @click="handleDialogSubmit"
+          >确认订单</el-button
+        >
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, Ref } from "vue";
+import { computed, ref, Ref, reactive } from "vue";
 import lodash from "lodash";
 import lof from "localforage";
 import { ElMessage } from "element-plus";
@@ -69,6 +135,9 @@ const props = defineProps(["type", "info"]);
 const skuInfo = computed(() => props.info.detail.sku[props.type] ?? {});
 const isEmptySku = computed(() => lodash.isEmpty(skuInfo.value));
 const currentSkuNum: Ref<any> = ref({});
+const dialogVisible: Ref<boolean> = ref(false);
+let prepareOrderListReactive = reactive([]);
+const prepareOrderList = ref([]);
 
 !lodash.isEmpty(skuInfo.value?.size) &&
   Object.values(skuInfo.value?.size).forEach((item: any) => {
@@ -104,8 +173,14 @@ async function handleOrder() {
     });
     return;
   }
+  prepareOrderList.value = orderList;
+  prepareOrderListReactive = orderList;
+  dialogVisible.value = true;
+}
+
+async function handleDialogSubmit() {
   const hasOrderList: any = (await lof.getItem(STORAGE_ORDER)) ?? [];
-  const newOrderList = [...hasOrderList, ...orderList];
+  const newOrderList = [...hasOrderList, ...prepareOrderListReactive];
   await lof.setItem(STORAGE_ORDER, newOrderList);
   ElMessage({
     message: "下单成功",
@@ -113,6 +188,12 @@ async function handleOrder() {
     offset: 80,
   });
   setTimeout(() => location.reload(), 1000);
+}
+
+function handleDialogClose() {
+  prepareOrderList.value = [];
+  prepareOrderListReactive = [];
+  dialogVisible.value = false;
 }
 
 function getUUID(tabName = "") {
@@ -173,6 +254,21 @@ function getUUID(tabName = "") {
 .operate-btn {
   width: 200px;
   height: 40px;
+}
+
+.order_product_info {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.order_product_info_img {
+  height: 100px;
+  width: 100px;
+  object-fit: cover;
+  margin-right: 8px;
+}
+.order_product_info_content_title {
+  font-size: 16px;
 }
 </style>
 
