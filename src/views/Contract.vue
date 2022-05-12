@@ -45,7 +45,6 @@
       >
     </div>
     <div>
-      已选择{{ selectedFile }}份文件
       <el-button-group class="ml-4">
         <el-button type="primary">下载所选</el-button>
         <el-button type="primary">删除所选</el-button>
@@ -56,7 +55,7 @@
         ref="multipleTableRef"
         :data="showData"
         style="width: 100%"
-        @selection-change="handleSelectionChange"
+        :default-sort="{ prop: 'createTime', order: 'descending' }"
       >
         <el-table-column type="selection" width="55" />
         <el-table-column property="filename" label="文件名称" width="120" />
@@ -66,8 +65,9 @@
         <el-table-column property="status" label="状态" width="120" />
         <el-table-column property="orderId" label="订单编号" width="180" />
         <el-table-column
-          property="createTime"
+          property="date"
           label="发起时间"
+          sortable
           show-overflow-tooltip
         />
         <el-table-column>
@@ -77,11 +77,6 @@
               size="small"
               @click="handleDetail(scope.$index, scope.row)"
               >详情</el-button
-            >
-            <el-button
-              size="small"
-              @click="handleDownload(scope.$index, scope.row)"
-              >下载</el-button
             >
             <el-button size="small" @click="handleSign(scope.$index, scope.row)"
               >签署</el-button
@@ -110,21 +105,18 @@
       <h3>签署前留档</h3>
       <el-image
         style="width: 100%; height: 95%"
-        :src="contractDetail"
+        :src="contractDetail1"
         :fit="fit"
       />
+      <el-button>删除</el-button>
+
       <h3>签署后合同</h3>
       <el-image
         style="width: 100%; height: 95%"
-        :src="contractDetail"
+        :src="contractDetail2"
         :fit="fit"
       />
-    </template>
-    <template #footer>
-      <div style="flex: auto">
-        <el-button @click="cancelClick">cancel</el-button>
-        <el-button type="primary" @click="confirmClick">confirm</el-button>
-      </div>
+      <el-button>删除</el-button>
     </template>
   </el-drawer>
   <!-- 签署合同浮窗 -->
@@ -193,9 +185,8 @@ import {
   Contract,
   contractList,
 } from "../constants/contract";
-import { UploadFile, UploadRawFile } from "element-plus";
+import { dayjs, UploadFile, UploadRawFile } from "element-plus";
 import lof from "localforage";
-import { el, ro, tr } from "element-plus/lib/locale";
 
 // 选中的表格数据大小
 const selectedFile = computed(() => 10);
@@ -208,7 +199,9 @@ function handlerContract() {
 // 根据选中条件查询数据
 function handlerSearch() {}
 // 上传文件处理函数
-function handleSuccess(response: any, uploadFile: UploadFile) {}
+function handleSuccess(response: any, uploadFile: UploadFile) {
+  contractDetail2.value = response;
+}
 const handleContractSubmit = () => {};
 const handleBeforeUpload = (rawFile: UploadRawFile) => {
   rawFile.name;
@@ -222,7 +215,8 @@ const startTime = ref("");
 const endTime = ref(new Date());
 const dialogVisible = ref(false);
 const contractData = ref([]);
-const contractDetail = ref("");
+const contractDetail1 = ref("");
+const contractDetail2 = ref("");
 const showData = computed(() => {
   switch (fileRadio.value) {
     case "待我签":
@@ -237,7 +231,7 @@ const showData = computed(() => {
       break;
     case "已完成":
       return contractData.value.filter(function (value: Contract) {
-        return value.status === "待他人签";
+        return value.status === "已完成";
       });
       break;
   }
@@ -252,14 +246,28 @@ const init = async () => {
   lof.getItem(STORAGE_CONTRACT).then((contracts: any) => {
     if (contracts !== null) {
       contractData.value.push(...contracts);
+      contractData.value.map((record) => {
+        record.date = new dayjs(record.createTime).format(
+          "YYYY-MM-DD hh:mm:ss"
+        );
+      });
     }
   });
 };
+// 签署合同
+const sender = ref("");
+const recipient = ref("");
+const orderId = ref("");
+const handleSign = (index: number, row: Contract) => {
+  dialogVisible.value = true;
+  sender.value = row.sender;
+  recipient.value = row.recipient;
+  orderId.value = row.orderId;
+};
 const handleDetail = (index: number, row: Contract) => {
   console.log(index, row);
-  contractDetail.value = row.contractFile;
+  contractDetail1.value = row.contractFile;
   drawer.value = true;
-  // contractDetail.value = row.
 };
 const handleDownload = (index: number, row: Contract) => {
   let image = new Image();
