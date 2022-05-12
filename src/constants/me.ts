@@ -1,5 +1,3 @@
-import { de, pa } from "element-plus/lib/locale";
-
 // 基础信息
 export const BASIC_SETTING = "b2b_basic_setting_";
 // 安全信息
