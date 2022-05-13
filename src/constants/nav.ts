@@ -58,6 +58,22 @@ export const NavAsideList: NavAsideItem[] = [
     label: "我的",
     icon: UserFilled,
     path: "/me",
-    children: [],
+    children: [
+      {
+        id: "40",
+        label: "基本设置",
+        path: "/me/basic",
+      },
+      {
+        id: "41",
+        label: "安全设置",
+        path: "/me/security",
+      },
+      {
+        id: "42",
+        label: "企业认证",
+        path: "/me/company",
+      },
+    ],
   },
 ];
